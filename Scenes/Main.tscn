@@ -1,0 +1,92 @@
+[gd_scene load_steps=9 format=3 uid="uid://cakk35dyweh0c"]
+
+[ext_resource type="Texture2D" uid="uid://c2sjk3a0xq3k2" path="res://Assets/basketball-court.svg" id="1_02xf1"]
+[ext_resource type="PackedScene" uid="uid://bqxd4enth76rr" path="res://Children/Player.tscn" id="2_t6yam"]
+[ext_resource type="Texture2D" uid="uid://bwmw3ad7pe857" path="res://Assets/basketball-ball.png" id="3_2bx6r"]
+[ext_resource type="PackedScene" uid="uid://raxj7h8dusbn" path="res://Children/Enemy.tscn" id="4_jyg55"]
+[ext_resource type="PackedScene" uid="uid://dpbs6a66m581v" path="res://Children/Team_mate.tscn" id="5_0el24"]
+[ext_resource type="Script" path="res://Scripts/Ball_behavior.gd" id="5_2amn3"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_gyggq"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_vs23b"]
+radius = 13.0
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Basketball-court" type="Sprite2D" parent="."]
+rotation = 1.5708
+scale = Vector2(1.2, 1.2)
+texture = ExtResource("1_02xf1")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="Player" parent="." groups=["people"] instance=ExtResource("2_t6yam")]
+
+[node name="Enemy" parent="." groups=["findable"] instance=ExtResource("4_jyg55")]
+position = Vector2(239, 0)
+
+[node name="Enemy2" parent="." groups=["findable"] instance=ExtResource("4_jyg55")]
+position = Vector2(282, -115)
+
+[node name="Enemy3" parent="." groups=["findable"] instance=ExtResource("4_jyg55")]
+position = Vector2(393, -138)
+
+[node name="Enemy4" parent="." groups=["findable"] instance=ExtResource("4_jyg55")]
+position = Vector2(287, 109)
+
+[node name="Enemy5" parent="." groups=["findable"] instance=ExtResource("4_jyg55")]
+position = Vector2(397, 155)
+
+[node name="Team_mate" parent="." groups=["findable"] instance=ExtResource("5_0el24")]
+position = Vector2(446, -231)
+
+[node name="Team_mate2" parent="." groups=["findable"] instance=ExtResource("5_0el24")]
+position = Vector2(255, -191)
+
+[node name="Team_mate3" parent="." groups=["findable"] instance=ExtResource("5_0el24")]
+position = Vector2(212, 151)
+
+[node name="Team_mate4" parent="." groups=["findable"] instance=ExtResource("5_0el24")]
+position = Vector2(435, 239)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2(0, -325)
+rotation = 3.14159
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+shape = SubResource("WorldBoundaryShape2D_gyggq")
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="."]
+position = Vector2(0, 325)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2"]
+shape = SubResource("WorldBoundaryShape2D_gyggq")
+
+[node name="StaticBody2D3" type="StaticBody2D" parent="."]
+position = Vector2(-545, 0)
+rotation = 1.5708
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D3"]
+shape = SubResource("WorldBoundaryShape2D_gyggq")
+
+[node name="StaticBody2D4" type="StaticBody2D" parent="."]
+position = Vector2(545, 0)
+rotation = 4.71239
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D4"]
+shape = SubResource("WorldBoundaryShape2D_gyggq")
+
+[node name="Basketball_ball" type="Area2D" parent="." groups=["ball", "findable"]]
+position = Vector2(200, 0)
+script = ExtResource("5_2amn3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Basketball_ball"]
+shape = SubResource("CircleShape2D_vs23b")
+
+[node name="Sprite2D" type="Sprite2D" parent="Basketball_ball"]
+scale = Vector2(0.005, 0.005)
+texture = ExtResource("3_2bx6r")
+
+[connection signal="ball_released" from="Player" to="Basketball_ball" method="_on_player_ball_released"]
+[connection signal="body_entered" from="Basketball_ball" to="Player" method="_on_basketball_ball_body_entered"]
